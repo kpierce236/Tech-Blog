@@ -1,19 +1,19 @@
 {{#extend "layouts/main"}}
     {{#content "body"}}
-        <h2>Home</h2>
-        <h3>My Blog Posts</h3>
+        <h2>Dashboard</h2>
+        <h3>All Blog Posts</h3>
         {{#if blogPosts.length}}
             <ul>
                 {{#each blogPosts}}
                     <li>
                         <a href="/blog/post/{{this.id}}">{{this.title}}</a>
+                        <!-- Optionally display the author's username -->
+                        <span>by {{this.User.username}}</span>
                     </li>
                 {{/each}}
             </ul>
         {{else}}
-            <p>No blog posts yet.</p>
+            <p>No blog posts found.</p>
         {{/if}}
-        <a href="/blog/new">Create New Post</a>
     {{/content}}
 {{/extend}}
-
