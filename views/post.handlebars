@@ -1,0 +1,35 @@
+{{#extend "layouts/main"}}
+    {{#content "body"}}
+        <article>
+            <h2>{{post.title}}</h2>
+            <p>{{formatDate post.createdAt}}</p>
+            <p>{{{post.content}}}</p>
+            <p>Posted by {{post.author}}.</p>
+        </article>
+        {{#if isAuthenticated}}
+            <h3>Leave a Comment</h3>
+            <form action="/post/{{post._id}}/comment" method="POST">
+                <div>
+                    <label for="comment">Your Comment:</label>
+                    <textarea id="comment" name="comment" required></textarea>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        {{else}}
+            <p>Please <a href="/login">login</a> to leave a comment.</p>
+        {{/if}}
+        <h3>Comments</h3>
+        {{#if post.comments.length}}
+            <ul>
+                {{#each post.comments}}
+                    <li>
+                        <p>{{this.content}}</p>
+                        <p>Comment by {{this.author}} on {{formatDate this.createdAt}}.</p>
+                    </li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <p>No comments yet.</p>
+        {{/if}}
+    {{/content}}
+{{/extend}}
