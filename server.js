@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const routes = require('./controllers');
+const exphbs = require('express-handlebars');
 
 const sequelize = require('./config/connection'); // Import Sequelize connection
 
@@ -26,7 +27,8 @@ const sess = {
 app.use(session(sess));
 
 // Set up handlebars as the view engine
-app.engine('handlebars');
+app.engine('handlebars', exphbs());
+
 app.set('view engine', 'handlebars');
 
 // Parse incoming request bodies in JSON format
