@@ -1,0 +1,17 @@
+{{#extend "layouts/main"}}
+    {{#content "body"}}
+        <h2>Welcome to our Tech Blog!</h2>
+        <p>Check out our latest blog posts:</p>
+        {{#if blogPosts.length}}
+            <ul>
+                {{#each blogPosts}}
+                    <li>
+                        <a href="/post/{{this._id}}">{{this.title}}</a> - {{formatDate this.createdAt}}
+                    </li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <p>No blog posts yet.</p>
+        {{/if}}
+    {{/content}}
+{{/extend}}
