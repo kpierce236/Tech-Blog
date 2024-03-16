@@ -1,9 +1,9 @@
 // routes/auth.js
-
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { User } = require('../models');
+const { setSession, destroySession } = require('../utils/withAuth');
 
 // Render Signup Form
 router.get('/signup', (req, res) => {
@@ -56,12 +56,25 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    // Set session upon successful login
+    setSession(req, user.id);
+
+
     // Return success message or token
     res.status(200).json({ message: 'Login successful' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
+});
+
+// Logout User
+router.get('/logout', (req, res) => {
+  // Destroy session upon logout
+  destroySession(req);
+  
+  // Redirect to login page or any other page
+  res.redirect('/login');
 });
 
 module.exports = router;

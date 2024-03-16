@@ -1,11 +1,11 @@
 // routes/blog.js
-
 const express = require('express');
 const router = express.Router();
 const { BlogPost, Comment } = require('../models');
+const { withAuth } = require('../utils/withAuth');
 
 // Get all blog posts for the dashboard
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', withAuth, async (req, res) => {
   try {
     const blogPosts = await BlogPost.findAll();
     res.render('dashboard', { blogPosts });
@@ -16,7 +16,7 @@ router.get('/dashboard', async (req, res) => {
 });
 
 // Get all blog posts for the home page
-router.get('/', async (req, res) => {
+router.get('/', withAuth, async (req, res) => {
   try {
     const userId = req.user.id; // Assuming the user object is available in the request after authentication
     const blogPosts = await BlogPost.findAll({ where: { userId } });
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get a specific blog post
-router.get('/post/:id', async (req, res) => {
+router.get('/post/:id', withAuth, async (req, res) => {
   try {
     const postId = req.params.id;
     const post = await BlogPost.findByPk(postId, { include: Comment });
@@ -40,7 +40,7 @@ router.get('/post/:id', async (req, res) => {
 });
 
 // Create a new blog post
-router.post('/post', async (req, res) => {
+router.post('/post', withAuth, async (req, res) => {
   try {
     const { title, content, userId } = req.body;
     const blogPost = await BlogPost.create({ title, content, userId });
@@ -52,7 +52,7 @@ router.post('/post', async (req, res) => {
 });
 
 // Create a new comment
-router.post('/post/:postId/comment', async (req, res) => {
+router.post('/post/:postId/comment', withAuth, async (req, res) => {
   try {
     const { content, userId } = req.body;
     const postId = req.params.postId;
@@ -65,7 +65,7 @@ router.post('/post/:postId/comment', async (req, res) => {
 });
 
 // Update a comment
-router.put('/post/:postId/comment/:commentId', async (req, res) => {
+router.put('/post/:postId/comment/:commentId', withAuth, async (req, res) => {
   try {
     const { content } = req.body;
     const { postId, commentId } = req.params;
@@ -83,7 +83,7 @@ router.put('/post/:postId/comment/:commentId', async (req, res) => {
 });
 
 // Get all comments for a blog post
-router.get('/post/:postId/comments', async (req, res) => {
+router.get('/post/:postId/comments', withAuth, async (req, res) => {
   try {
     const postId = req.params.postId;
     const comments = await Comment.findAll({ where: { postId } });
