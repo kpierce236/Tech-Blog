@@ -16,7 +16,7 @@ router.get('/login', (req, res) => {
 });
 
 // Register User
-router.post('/register', async (req, res) => {
+router.post('/signup', async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -29,10 +29,13 @@ router.post('/register', async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
-    await User.create({ username, password: hashedPassword });
 
-    res.status(201).json({ message: 'User registered successfully' });
+    // Create new user
+   const user = await User.create({ username, password: hashedPassword });
+
+    setSession(req, user.id);
+    
+    res.redirect('/');
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server Error' });
@@ -59,9 +62,7 @@ router.post('/login', async (req, res) => {
     // Set session upon successful login
     setSession(req, user.id);
 
-
-    // Return success message or token
-    res.status(200).json({ message: 'Login successful' });
+    res.redirect('/');
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server Error' });

@@ -1,13 +1,16 @@
 // routes/blog.js
 const express = require('express');
 const router = express.Router();
-const { BlogPost, Comment } = require('../models');
+const { BlogPost, Comment, User } = require('../models');
 const { withAuth } = require('../utils/withAuth');
 
 // Get all blog posts for the dashboard
 router.get('/dashboard', withAuth, async (req, res) => {
   try {
-    const blogPosts = await BlogPost.findAll();
+    const blogData = await BlogPost.findAll({include: { model: User }});
+
+    const blogPosts = blogData.map((item) => item.get({ plain: true }));
+
     res.render('dashboard', { blogPosts });
   } catch (error) {
     console.error(error);
@@ -18,8 +21,14 @@ router.get('/dashboard', withAuth, async (req, res) => {
 // Get all blog posts for the home page
 router.get('/', withAuth, async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming the user object is available in the request after authentication
-    const blogPosts = await BlogPost.findAll({ where: { userId } });
+    const userId = req.session.user_id; // Assuming the user object is available in the request after authentication
+    console.log(userId);
+    const blogData = await BlogPost.findAll({ where: { userId },include: { model: User } });
+
+    console.log(blogData);
+
+    const blogPosts = blogData.map((item) => item.get({ plain: true }));
+
     res.render('home', { blogPosts });
   } catch (error) {
     console.error(error);
@@ -30,8 +39,15 @@ router.get('/', withAuth, async (req, res) => {
 // Get a specific blog post
 router.get('/post/:id', withAuth, async (req, res) => {
   try {
-    const postId = req.params.id;
-    const post = await BlogPost.findByPk(postId, { include: Comment });
+    const blogPostId = req.params.id;
+    const postData = await BlogPost.findByPk(blogPostId, { include: [ {model: Comment, include: User}, {model: User} ]});
+
+    console.log(postData);
+
+    const post = postData.get({ plain: true });
+
+    console.log(post);
+
     res.render('post', { post });
   } catch (error) {
     console.error(error);
@@ -42,9 +58,13 @@ router.get('/post/:id', withAuth, async (req, res) => {
 // Create a new blog post
 router.post('/post', withAuth, async (req, res) => {
   try {
-    const { title, content, userId } = req.body;
+    const userId = req.session.user_id;
+    console.log(userId);
+    const { title, content } = req.body;
     const blogPost = await BlogPost.create({ title, content, userId });
-    res.status(201).send('Blog post created successfully');
+    console.log(blogPost);
+    res.redirect(`post/${blogPost.id}`)
+    
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
@@ -54,9 +74,11 @@ router.post('/post', withAuth, async (req, res) => {
 // Create a new comment
 router.post('/post/:postId/comment', withAuth, async (req, res) => {
   try {
-    const { content, userId } = req.body;
-    const postId = req.params.postId;
-    const comment = await Comment.create({ content, userId, postId });
+    const userId = req.session.user_id;
+    const { content } = req.body;
+    const blogPostId = req.params.postId;
+    const comment = await Comment.create({ content, userId, blogPostId });
+
     res.status(201).send('Comment created successfully');
   } catch (error) {
     console.error(error);
@@ -68,8 +90,8 @@ router.post('/post/:postId/comment', withAuth, async (req, res) => {
 router.put('/post/:postId/comment/:commentId', withAuth, async (req, res) => {
   try {
     const { content } = req.body;
-    const { postId, commentId } = req.params;
-    const comment = await Comment.findOne({ where: { id: commentId, postId } });
+    const { blogPostId, commentId } = req.params;
+    const comment = await Comment.findOne({ where: { id: commentId, blogPostId } });
     if (!comment) {
       return res.status(404).send('Comment not found');
     }
@@ -85,8 +107,8 @@ router.put('/post/:postId/comment/:commentId', withAuth, async (req, res) => {
 // Get all comments for a blog post
 router.get('/post/:postId/comments', withAuth, async (req, res) => {
   try {
-    const postId = req.params.postId;
-    const comments = await Comment.findAll({ where: { postId } });
+    const blogPostId = req.params.postId;
+    const comments = await Comment.findAll({ where: { blogPostId } });
     res.json(comments);
   } catch (error) {
     console.error(error);

@@ -1,16 +1,15 @@
-        <h2>Dashboard</h2>
-        <h3>All Blog Posts</h3>
-        {{#if blogPosts.length}}
-            <ul>
-                {{#each blogPosts}}
-                    <li>
-                        <a href="/blog/post/{{this.id}}">{{this.title}}</a>
-                        <!-- Optionally display the author's username -->
-                        <span>by {{this.User.username}}</span>
-                    </li>
-                {{/each}}
-            </ul>
-        {{else}}
-            <p>No blog posts found.</p>
-        {{/if}}
+<h2 class="title">Dashboard</h2>
+<h3 class="section-title">All Blog Posts</h3>
+{{#if blogPosts.length}}
+    <ul class="post-list">
+        {{#each blogPosts}}
+            <li class="post-item">
+                <a href="post/{{this.id}}" class="post-link">{{this.title}}</a>
+                <span class="post-author">by {{this.user.username}}</span>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No blog posts found.</p>
+{{/if}}
 

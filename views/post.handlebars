@@ -1,33 +1,34 @@
-        <article>
-            <h2>{{post.title}}</h2>
-            <p>{{formatDate post.createdAt}}</p>
-            <p>{{{post.content}}}</p>
-            <p>Posted by {{post.author}}.</p>
-        </article>
-        {{#if isAuthenticated}}
-            <h3>Leave a Comment</h3>
-            <form action="/post/{{post._id}}/comment" method="POST">
-                <div>
-                    <label for="comment">Your Comment:</label>
-                    <textarea id="comment" name="comment" required></textarea>
-                </div>
-                <button type="submit">Submit</button>
-            </form>
-        {{else}}
-            <p>Please <a href="/login">login</a> to leave a comment.</p>
-        {{/if}}
-        <h3>Comments</h3>
-        {{#if post.comments.length}}
-            <ul>
-                {{#each post.comments}}
-                    <li>
-                        <p>{{this.content}}</p>
-                        <p>Comment by {{this.author}} on {{formatDate this.createdAt}}.</p>
-                    </li>
-                {{/each}}
-            </ul>
-        {{else}}
-            <p>No comments yet.</p>
-        {{/if}}
+<article class="blog-post">
+    <h2 class="post-title">{{post.title}}</h2>
+    <p class="post-date">{{post.createdAt}}</p>
+    <p class="post-content">{{{post.content}}}</p>
+    <p class="post-author">Posted by {{post.user.username}}.</p>
+</article>
+{{#if isAuthenticated}}
+    <h3 class="comment-title">Leave a Comment</h3>
+    <form action="/post/{{post.id}}/comment" method="POST" class="comment-form">
+        <div class="form-group">
+            <label for="comment" class="form-label">Your Comment:</label>
+            <textarea id="comment" name="content" class="form-textarea" required></textarea>
+        </div>
+        <button type="submit" class="submit-button">Submit</button>
+    </form>
+{{else}}
+    <p class="login-reminder">Please <a href="/login" class="login-link">login</a> to leave a comment.</p>
+{{/if}}
+<h3 class="comment-title">Comments</h3>
+{{#if post.Comments.length}}
+    <ul class="comment-list">
+        {{#each post.Comments}}
+            <li class="comment-item">
+                <p class="comment-content">{{this.content}}</p>
+                <p class="comment-details">Comment by {{this.user.username}} on {{this.createdAt}}.</p>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p class="no-comments">No comments yet.</p>
+{{/if}}
+
  
 
