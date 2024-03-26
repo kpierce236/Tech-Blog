@@ -1,6 +1,6 @@
 <article class="blog-post">
     <h2 class="post-title">{{post.title}}</h2>
-    <p class="post-date">{{post.createdAt}}</p>
+    <p class="post-date">{{moment post.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}</p>
     <p class="post-content">{{{post.content}}}</p>
     <p class="post-author">Posted by {{post.user.username}}.</p>
 </article>
@@ -22,7 +22,7 @@
         {{#each post.Comments}}
             <li class="comment-item">
                 <p class="comment-content">{{this.content}}</p>
-                <p class="comment-details">Comment by {{this.user.username}} on {{this.createdAt}}.</p>
+                <p class="comment-details">Comment by {{this.user.username}} on {{moment this.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}.</p>
             </li>
         {{/each}}
     </ul>

@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const routes = require('./controllers');
 const exphbs = require('express-handlebars');
+const moment = require('moment');
 
 const sequelize = require('./config/connection'); // Import Sequelize connection
 
@@ -22,12 +23,21 @@ const sess = {
     db: sequelize // Sequelize connection
   })
 };
+// Register moment helper with Handlebars
+const hbs = exphbs.create({
+  helpers: {
+      moment: function(date, options) {
+        const format = options.hash.format || "YYYY-MM-DD HH:mm:ss";
+        return moment(date).format(format);
+      }
+  }
+});
 
 // Set up session middleware with the defined session configuration
 app.use(session(sess));
 
 // Set up handlebars as the view engine
-app.engine('handlebars', exphbs());
+app.engine('handlebars', hbs.engine);
 
 app.set('view engine', 'handlebars');
 
