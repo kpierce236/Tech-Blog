@@ -95,6 +95,7 @@ a:hover {
     color: #555;
 }
 
+
 /* Specific styles for each view */
 
 /* Login view */
@@ -131,14 +132,6 @@ a:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.post-link {
-    color: #333;
-}
-
-.post-link:hover {
-    color: #555;
-}
-
 .post-author {
     font-style: italic;
     color: #888;
@@ -156,6 +149,7 @@ a:hover {
 .post-title {
     margin-top: 0;
     color: #333;
+    font-size: 24px; 
 }
 
 .post-date {
@@ -194,4 +188,36 @@ a:hover {
     font-style: italic;
 }
 
-  
+.button a {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover a  {
+    background-color: white;
+    color: #333;
+    border-color: #333 ;
+    border-style:solid;
+}
+
+#create-post-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#create-post-button:hover {
+    background-color: #555;
+}
+

@@ -4,8 +4,13 @@
     <ul class="post-list">
         {{#each blogPosts}}
             <li class="post-item">
-                <a href="post/{{this.id}}" class="post-link">{{this.title}}</a>
-                <span class="post-author">by {{this.user.username}}</span>
+                 <div class="post-header">
+                    <h3 class="button btn-title"><a class="btn-title" href="post/{{this.id}}">{{this.title}}</a></h3>
+                    <span class="post-author">by {{this.user.username}}</span>
+                </div>
+                <div class="post-content">
+                    <p>{{this.content}}</p> <!-- Add content here -->
+                </div>
             </li>
         {{/each}}
     </ul>
