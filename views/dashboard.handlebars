@@ -3,15 +3,26 @@
 {{#if blogPosts.length}}
     <ul class="post-list">
         {{#each blogPosts}}
+        <a href="post/{{this.id}}" >
             <li class="post-item">
-                 <div class="post-header">
-                    <h3 class="button btn-title"><a class="btn-title" href="post/{{this.id}}">{{this.title}}</a></h3>
-                    <span class="post-author">by {{this.user.username}}</span>
-                </div>
-                <div class="post-content">
-                    <p>{{this.content}}</p> <!-- Add content here -->
-                </div>
+                <div class="post-header">
+                     <div class="post-header-left">
+                         <h3 class="post-title">
+                            {{this.title}}
+                        </h3>
+                    </div>
+                 <div class="post-header-right">
+                     <div class="post-meta">
+                        <span class="post-author">by {{this.user.username}}</span>
+                        <span class="post-date">Created at: {{this.createdAt}}</span>
+                    </div>
+                 </div>
+             </div>
+             <div class="post-content">
+                 <p>{{this.content}}</p> <!-- Add content here -->
+             </div>
             </li>
+        </a>
         {{/each}}
     </ul>
 {{else}}

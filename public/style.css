@@ -90,15 +90,9 @@ button[type="submit"]:hover {
 
 a {
     text-decoration: none;
-    color: #333;
+    color: inherit;
 }
 
-a:hover {
-    color: #555;
-}
-
-
-/* Specific styles for each view */
 
 /* Login view */
 .login-form {
@@ -127,12 +121,17 @@ a:hover {
 }
 
 .post-item {
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    transition: box-shadow 0.3s ease; /* Smooth transition for background color change */
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.post-item:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Intense box shadow on hover */
+}
+
 
 .post-author {
     font-style: italic;
@@ -148,10 +147,32 @@ a:hover {
     margin-bottom: 20px;
 }
 
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333; /* Header background color */
+    color: #fff; /* Text color */
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.post-header-left {
+    flex: 1; /* Take up remaining space */
+}
+
+.post-header-right {
+    /* Add styling for the right side of the header if needed */
+}
 .post-title {
     margin-top: 0;
-    color: #333;
-    font-size: 24px; 
+    color: #fff;
+}
+
+.post-link {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
 }
 
 .post-date {
@@ -161,10 +182,20 @@ a:hover {
 }
 
 .post-content {
-    margin-bottom: 10px;
+    background-color: #fff; /* Bottom background color */
+    padding: 20px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.post-meta {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Change flex direction to column */
+    color: #ccc; /* Meta information color */
+}
+
+.post-meta span {
+    margin-bottom: 5px; /* Add margin between the spans */
 }
 
 .comment-form {
