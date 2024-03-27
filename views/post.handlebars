@@ -7,8 +7,8 @@
      {{#if isAuthenticated}}
         {{#if isOwnPost}} <!-- Check if the post belongs to the authenticated user -->
             <div class="post-actions">
-                 <button class="update-post-button" data-post-id="{{this.id}}" data-post-title="{{this.title}}" data-post-content="{{this.content}}">Update</button>
-                <button class="delete-post-button" data-post-id="{{this.id}}">Delete</button>
+                 <button class="update-post-button" data-post-id="{{post.id}}" data-post-title="{{post.title}}" data-post-content="{{post.content}}">Update</button>
+                <button class="delete-post-button" data-post-id="{{post.id}}">Delete</button>
             </div>
         {{/if}}
     {{/if}}
@@ -54,11 +54,13 @@
 </div>
 
 <script>
-    const deleteButtons = document.querySelectorAll('.delete-button');
+    const deleteButtons = document.querySelectorAll('.delete-post-button');
 deleteButtons.forEach(button => {
     button.addEventListener('click', function(event) {
         event.preventDefault();
         event.stopPropagation(); // Prevent default form submission behavior
+
+        console.log("Clicked Delete");
         const postId = button.dataset.postId;
         // Perform delete post action using AJAX
         fetch(`/post/${postId}`, {
@@ -67,7 +69,7 @@ deleteButtons.forEach(button => {
         .then(response => {
             if (response.ok) {
                 // Post deleted successfully, you can redirect or update UI accordingly
-                location.reload(); // For example, reload the page to reflect changes
+               window.location.replace("/"); 
             } else {
                 throw new Error('Failed to delete post');
             }
@@ -102,6 +104,7 @@ updateButtons.forEach(button => {
     button.addEventListener('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
+        console.log("Clicked Update");
         const postId = button.dataset.postId;
         const postTitle = button.dataset.postTitle;
         const postContent = button.dataset.postContent;
