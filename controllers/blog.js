@@ -116,4 +116,25 @@ router.get('/post/:postId/comments', withAuth, async (req, res) => {
   }
 });
 
+// Delete a blog post
+router.delete('/post/:id', withAuth, async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const blogPostId = req.params.id;
+
+    const blogPost = await BlogPost.findOne({ where: { id: blogPostId, userId } });
+
+    if (!blogPost) {
+      return res.status(404).send('Blog post not found');
+    }
+
+    await blogPost.destroy();
+
+    res.status(200).send('Blog post deleted successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
