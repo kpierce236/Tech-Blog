@@ -42,13 +42,26 @@ router.get('/post/:id', withAuth, async (req, res) => {
     const blogPostId = req.params.id;
     const postData = await BlogPost.findByPk(blogPostId, { include: [ {model: Comment, include: User}, {model: User} ]});
 
-    console.log(postData);
+    //console.log(postData);
 
-    const post = postData.get({ plain: true });
+   const post = postData.get({ plain: true });
 
     const isOwnPost = post.user.id === req.session.user_id;
 
-    res.render('post', { post, isOwnPost});
+     // Fetch all comments for the post
+     const comments = await Comment.findAll({ where: { blogPostId }, include: User });
+    
+     // Check if each comment belongs to the authenticated user
+     const userComments = comments.map(comment => {
+       return {
+         ...comment.get({ plain: true }),
+         isOwnComment: comment.user.id === req.session.user_id
+       };
+     });
+
+     console.log(userComments);
+
+    res.render('post', { post, isOwnPost, comments: userComments});
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
@@ -63,6 +76,8 @@ router.post('/post', withAuth, async (req, res) => {
     const { title, content } = req.body;
     const blogPost = await BlogPost.create({ title, content, userId });
     console.log(blogPost);
+
+
     res.redirect(`post/${blogPost.id}`)
     
   } catch (error) {
@@ -78,8 +93,9 @@ router.post('/post/:postId/comment', withAuth, async (req, res) => {
     const { content } = req.body;
     const blogPostId = req.params.postId;
     const comment = await Comment.create({ content, userId, blogPostId });
+    console.log(comment);
 
-    res.status(201).send('Comment created successfully');
+    res.redirect(`/post/${blogPostId}`)
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
@@ -140,6 +156,33 @@ router.put('/post/:id', withAuth, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
+  }
+});
+
+
+// Route to delete a comment
+router.delete('/post/:postId/comment/:commentId', async (req, res) => {
+  try {
+      const { postId, commentId } = req.params;
+
+      // Check if the comment exists
+      const comment = await Comment.findByPk(commentId);
+      if (!comment) {
+          return res.status(404).json({ error: 'Comment not found' });
+      }
+
+      // Check if the comment belongs to the authenticated user
+      if (comment.userId !== req.session.user_id) {
+          return res.status(403).json({ error: 'Unauthorized to delete this comment' });
+      }
+
+      // Delete the comment
+      await comment.destroy();
+
+      res.status(200).send('Delete Sucessful');
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Server error' });
   }
 });
 
