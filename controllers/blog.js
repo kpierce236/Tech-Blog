@@ -137,4 +137,28 @@ router.delete('/post/:id', withAuth, async (req, res) => {
   }
 });
 
+//Update a blog post
+router.put('/post/:id', withAuth, async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const blogPostId = req.params.id;
+    const { title, content } = req.body;
+
+    const blogPost = await BlogPost.findOne({ where: { id: blogPostId, userId } });
+
+    if (!blogPost) {
+      return res.status(404).send('Blog post not found');
+    }
+
+    blogPost.title = title;
+    blogPost.content = content;
+    await blogPost.save();
+
+    res.status(200).send('Blog post updated successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
