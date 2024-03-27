@@ -4,7 +4,12 @@
     <ul class="post-list">
         {{#each blogPosts}}
             <li class="post-item">
-                <a href="post/{{this.id}}" class="post-link">{{this.title}}</a>
+                <div class="post-content">
+                    <div>
+                        <a href="post/{{this.id}}" class="post-link">{{this.title}}</a>
+                    </div>
+                    <div class="created-at">{{moment this.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}</div>
+                </div>
             </li>
         {{/each}}
     </ul>
