@@ -297,3 +297,32 @@ a {
 .created-at {
     flex-shrink: 0;
 }
+
+.custom-blog-post {
+    background-color: #f9f9f9; /* Background color */
+    padding: 20px; /* Padding around the content */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    margin-bottom: 20px; /* Spacing between blog posts */
+}
+
+.custom-blog-post .post-title {
+    color: #333; /* Title color */
+    font-size: 24px; /* Title font size */
+    margin-top: 0; /* Remove top margin */
+}
+
+.custom-blog-post .post-date {
+    color: #888; /* Date color */
+    font-style: italic; /* Date font style */
+}
+
+.custom-blog-post .post-content {
+    margin-bottom: 20px; /* Spacing below content */
+    background-color: #f9f9f9;
+}
+
+.custom-blog-post .post-author {
+    color: #555; /* Author color */
+}
+
