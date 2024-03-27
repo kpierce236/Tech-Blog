@@ -102,8 +102,13 @@ a {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.login-link {
-    margin-top: 10px;
+
+.signup-link:hover {
+    color: cornflowerblue;
+}
+
+.login-link:hover {
+    color: cornflowerblue;
 }
 
 /* Sign Up view */
@@ -275,13 +280,14 @@ a {
     background-color: #fefefe;
     margin: 15% auto; /* Centered */
     padding: 20px;
-    border: 1px solid #888;
+    border-radius: 5px;
+    border: 5px solid #888;
     width: 80%; /* 80% of parent element */
 }
 
 /* Close Button */
 .close {
-    color: #aaa;
+    color: black;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -289,7 +295,7 @@ a {
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: red;
     text-decoration: none;
     cursor: pointer;
 }
