@@ -3,6 +3,15 @@
     <p class="post-date">{{moment post.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}</p>
     <p class="post-content">{{{post.content}}}</p>
     <p class="post-author">Posted by {{post.user.username}}.</p>
+
+     {{#if isAuthenticated}}
+        {{#if isOwnPost}} <!-- Check if the post belongs to the authenticated user -->
+            <div class="post-actions">
+                 <button class="update-post-button" data-post-id="{{this.id}}" data-post-title="{{this.title}}" data-post-content="{{this.content}}">Update</button>
+                <button class="delete-post-button" data-post-id="{{this.id}}">Delete</button>
+            </div>
+        {{/if}}
+    {{/if}}
 </article>
 {{#if isAuthenticated}}
     <h3 class="comment-title">Leave a Comment</h3>
@@ -29,6 +38,130 @@
 {{else}}
     <p class="no-comments">No comments yet.</p>
 {{/if}}
+
+<div id="update-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="update-post-form" class="update-post-form" action="" method="POST">
+            <input type="hidden" id="update-post-id" name="update_post_id" value="">
+            <label for="update-post-title">Title:</label>
+            <input type="text" id="update-post-title" name="update_title" required><br>
+            <label for="update-post-content">Content:</label><br>
+            <textarea id="update-post-content" name="update_content" required></textarea><br>
+            <button type="submit" id="update-button">Update</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const deleteButtons = document.querySelectorAll('.delete-button');
+deleteButtons.forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation(); // Prevent default form submission behavior
+        const postId = button.dataset.postId;
+        // Perform delete post action using AJAX
+        fetch(`/post/${postId}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                // Post deleted successfully, you can redirect or update UI accordingly
+                location.reload(); // For example, reload the page to reflect changes
+            } else {
+                throw new Error('Failed to delete post');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting post:', error);
+            // Handle error, e.g., show error message to user
+        });
+    });
+});
+
+// Function to handle opening the update modal
+function openUpdateModal(postId, title, content) {
+    const updateModal = document.getElementById('update-modal');
+    const updateTitleInput = document.getElementById('update-post-title');
+    const updateContentInput = document.getElementById('update-post-content');
+
+    // Fill input fields with existing post data
+    updateTitleInput.value = title;
+    updateContentInput.value = content;
+
+    // Set the post ID in the hidden input field
+    document.getElementById('update-post-id').value = postId;
+
+    // Display the update modal
+    updateModal.style.display = 'block';
+}
+
+// Add event listeners to update buttons
+const updateButtons = document.querySelectorAll('.update-post-button');
+updateButtons.forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const postId = button.dataset.postId;
+        const postTitle = button.dataset.postTitle;
+        const postContent = button.dataset.postContent;
+        openUpdateModal(postId, postTitle, postContent);
+    });
+});
+
+// Function to handle update form submission
+function handleUpdate(event) {
+    event.preventDefault(); // Prevent default form submission behavior
+    const postId = document.getElementById('update-post-id').value;
+    const title = document.getElementById('update-post-title').value;
+    const content = document.getElementById('update-post-content').value;
+    const url = `/post/${postId}`;
+
+    // Perform form submission using AJAX
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title, content })
+    })
+    .then(response => {
+        if (response.ok) {
+            // Post updated successfully, you can redirect or update UI accordingly
+            location.reload(); // For example, reload the page to reflect changes
+        } else {
+            throw new Error('Failed to update post');
+        }
+    })
+    .catch(error => {
+        console.error('Error updating post:', error);
+        // Handle error, e.g., show error message to user
+    });
+}
+
+// Add event listener for update form submission
+const updateForm = document.getElementById('update-post-form');
+updateForm.addEventListener('submit', handleUpdate);
+
+// Function to close the update modal
+function closeUpdateModal() {
+    const updateModal = document.getElementById('update-modal');
+    updateModal.style.display = 'none';
+}
+
+// Add event listener to close button in the update modal
+const updateCloseButton = document.querySelector('#update-modal .close');
+updateCloseButton.addEventListener('click', closeUpdateModal);
+
+// Close the update modal when clicking outside of it
+window.addEventListener('click', function(event) {
+    const updateModal = document.getElementById('update-modal');
+    if (event.target === updateModal) {
+        closeUpdateModal();
+    }
+});
+
+</script>
 
  
 
