@@ -26,12 +26,15 @@
     <p class="login-reminder">Please <a href="/login" class="login-link">login</a> to leave a comment.</p>
 {{/if}}
 <h3 class="comment-title">Comments</h3>
-{{#if post.Comments.length}}
+{{#if comments.length}}
     <ul class="comment-list">
-        {{#each post.Comments}}
+        {{#each comments}}
             <li class="comment-item">
                 <p class="comment-content">{{this.content}}</p>
-                <p class="comment-details">Comment by {{this.user.username}} on {{moment this.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}.</p>
+                <p class="comment-details">Commented by {{this.user.username}} on {{moment this.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}.</p>
+                    {{#if isOwnComment}} 
+                        <button class="delete-comment-button" data-post-id="{{this.blogPostId}}" data-comment-id="{{this.id}}">Delete</button>
+                    {{/if}}
             </li>
         {{/each}}
     </ul>
@@ -163,6 +166,33 @@ window.addEventListener('click', function(event) {
         closeUpdateModal();
     }
 });
+
+// Add event listener to delete comment buttons
+    const deleteCommentButtons = document.querySelectorAll('.delete-comment-button');
+    deleteCommentButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const commentId = button.dataset.commentId;
+            const postId = button.dataset.postId;
+                // Perform delete comment action using AJAX
+                fetch(`/post/${postId}/comment/${commentId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                         window.location.replace(`/post/${postId}`); I
+                    } else {
+                        throw new Error('Failed to delete comment');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting comment:', error);
+                    // Handle error, e.g., show error message to user
+                });
+            
+        });
+    });
 
 </script>
 
