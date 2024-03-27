@@ -46,9 +46,9 @@ router.get('/post/:id', withAuth, async (req, res) => {
 
     const post = postData.get({ plain: true });
 
-    console.log(post);
+    const isOwnPost = post.user.id === req.session.user_id;
 
-    res.render('post', { post });
+    res.render('post', { post, isOwnPost});
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
@@ -80,24 +80,6 @@ router.post('/post/:postId/comment', withAuth, async (req, res) => {
     const comment = await Comment.create({ content, userId, blogPostId });
 
     res.status(201).send('Comment created successfully');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
-  }
-});
-
-// Update a comment
-router.put('/post/:postId/comment/:commentId', withAuth, async (req, res) => {
-  try {
-    const { content } = req.body;
-    const { blogPostId, commentId } = req.params;
-    const comment = await Comment.findOne({ where: { id: commentId, blogPostId } });
-    if (!comment) {
-      return res.status(404).send('Comment not found');
-    }
-    comment.content = content;
-    await comment.save();
-    res.status(200).send('Comment updated successfully');
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
