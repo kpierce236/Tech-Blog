@@ -14,27 +14,39 @@
 
 <button id="create-post-button" class="create-post-button">Create New Post</button>
 
-<form id="create-post-form" class="create-post-form" style="display: none;" action="/post" method="POST">
-    <label for="post-title">Title:</label>
-    <input type="text" id="post-title" name="title" required><br>
-    <label for="post-content">Content:</label><br>
-    <textarea id="post-content" name="content" required></textarea><br>
-    <button type="submit">Submit</button>
-</form>
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="create-post-form" class="create-post-form" action="/post" method="POST">
+            <label for="post-title">Title:</label>
+            <input type="text" id="post-title" name="title" required><br>
+            <label for="post-content">Content:</label><br>
+            <textarea id="post-content" name="content" required></textarea><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
 
 <script>
     const createPostButton = document.getElementById('create-post-button');
-    const createPostForm = document.getElementById('create-post-form');
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementsByClassName('close')[0];
     
     createPostButton.addEventListener('click', function() {
-        if (createPostForm.style.display === 'none') {
-            createPostForm.style.display = 'block';
-            createPostButton.textContent = 'Cancel New Post';
-        } else {
-            createPostForm.style.display = 'none';
-            createPostButton.textContent = 'Create New Post';
-        }
+        modal.style.display = 'block';
     });
+
+    closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+        });
+
+    window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
 </script>
 
 
