@@ -30,8 +30,10 @@
     <ul class="comment-list">
         {{#each comments}}
             <li class="comment-item">
-                <p class="comment-content">{{this.content}}</p>
-                <p class="comment-details">Commented by {{this.user.username}} on {{moment this.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}.</p>
+                <div class="comment-content">
+                    <p class="comment-title">{{this.content}}</p>
+                    <p class="comment-details">Commented by {{this.user.username}} on {{moment this.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}.</p>
+                </div>
                     {{#if isOwnComment}} 
                         <button class="delete-comment-button" data-post-id="{{this.blogPostId}}" data-comment-id="{{this.id}}">Delete</button>
                     {{/if}}
