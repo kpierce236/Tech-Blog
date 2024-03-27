@@ -7,8 +7,8 @@
      {{#if isAuthenticated}}
         {{#if isOwnPost}} <!-- Check if the post belongs to the authenticated user -->
             <div class="post-actions">
-                 <button class="update-post-button" data-post-id="{{post.id}}" data-post-title="{{post.title}}" data-post-content="{{post.content}}">Update</button>
-                <button class="delete-post-button" data-post-id="{{post.id}}">Delete</button>
+                 <button class="custom-button update-post-button" data-post-id="{{post.id}}" data-post-title="{{post.title}}" data-post-content="{{post.content}}">Update</button>
+                <button class="custom-button delete-post-button" data-post-id="{{post.id}}">Delete</button>
             </div>
         {{/if}}
     {{/if}}

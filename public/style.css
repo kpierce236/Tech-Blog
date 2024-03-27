@@ -366,3 +366,34 @@ a {
     margin-top: 5px;
     color: #555;
 }
+
+/* Button styles */
+.custom-button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+
+.delete-post-button {
+    background-color: #f44336; /* Red color */
+    margin-right: 8px;
+    color:white;
+}
+
+.update-post-button {
+    background-color: #008CBA; /* Blue color */
+    color: white;
+}
+
+.update-post-button:hover {
+    background-color: #007A99; /* Lighter blue on hover */;
+}
+
+.delete-post-button:hover {
+    background-color: #d32f2f; /* Lighter red on hover */;
+
+}
