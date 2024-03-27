@@ -1,16 +1,18 @@
 <h2 class="title">Home</h2>
 <h3 class="section-title">My Blog Posts</h3>
 {{#if blogPosts.length}}
-    <ul class="post-list">
+    <ul class="custom-post-list">
         {{#each blogPosts}}
-            <li class="post-item">
-                <div class="post-content">
-                    <div>
-                        <a href="post/{{this.id}}" class="post-link">{{this.title}}</a>
+        <a href="post/{{this.id}}" >
+            <li class="custom-post-item">
+                <div class="custom-post-text">
+                    <div class ="custom-post-title">
+                        {{this.title}}
                     </div>
-                    <div class="created-at">{{moment this.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}</div>
+                    <div class="custom-created-at">{{moment this.createdAt format="dddd, MMMM Do YYYY, h:mm a"}}</div>
                 </div>
             </li>
+        </a>
         {{/each}}
     </ul>
 {{else}}

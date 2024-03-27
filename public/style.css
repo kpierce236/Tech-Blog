@@ -326,3 +326,37 @@ a {
     color: #555; /* Author color */
 }
 
+.custom-post-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.custom-post-item {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease; /* Add transition for smoother hover effect */
+}
+
+.custom-post-item:hover {
+    background-color: #e0e0e0;
+}
+
+.custom-post-title{
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+.custom-created-at {
+    font-style: italic;
+    color: #888;
+}
+
+.custom-post-text {
+    margin-top: 5px;
+    color: #555;
+}
