@@ -82,9 +82,12 @@ The Tech Blog is a CMS-style blog site where developers can:
 
 ## Demo
 
-Check out the application functionality in action:
+Check out the application functionality in action: 
 
-[![Demo of the Application](demo.gif)](https://example.com)
+*Click the gif to see the full video* and **[HERE](https://tech-blog-kp-dc469c536e9a.herokuapp.com/login) for deployed app**
+
+[![Demo of the Application](images/demo.gif)](https://drive.google.com/file/d/1Hw8WsIdMjc00u1pjAm8CH0KwUb3RWwuP/view)
+
 
 ## Credits
 
